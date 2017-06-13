@@ -48,7 +48,8 @@ class UserSession(models.Model):
 def user_logged_in_receiver(sender, request, *args, **kwargs):
 	user = sender
 	#request = #parse the request to get the ip address	
-	UserSession.objects.create()
+	session_key = request.session.session_key #got ip address
+	UserSession.objects.create(user = user, session_key = session_key)
 
 
 user_logged_in.connect(user_logged_in_receiver)
