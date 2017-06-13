@@ -12,3 +12,6 @@ class LoginView(DefaultLoginView): #form view
 		if self.request.user.is_authenticated():
 			user.logged_in.send(self.request.user, request=self.request)
 		return done_
+
+class LogoutView(DefaultLogoutView):
+	pass
