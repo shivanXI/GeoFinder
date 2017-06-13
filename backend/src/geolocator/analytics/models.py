@@ -51,4 +51,4 @@ def user_logged_in_receiver(sender, request, *args, **kwargs):
 	UserSession.objects.create()
 
 
-user_logged_in.connect()
+user_logged_in.connect(user_logged_in_receiver)
