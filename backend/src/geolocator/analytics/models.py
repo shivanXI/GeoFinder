@@ -68,14 +68,15 @@ def user_logged_in_receiver(sender, request, *args, **kwargs):
 	ip_address = get_client_ip(request)
 	#ip_address = '72.14.207.99'
 	#if ip_address:
-	#	city_data = get_client_city_data(ip_address)
+	city_data = get_client_city_data(ip_address)
+	request.session['CITY'] = str(city_data.get('city', 'Noida'))
 	session_key = request.session.session_key #got ip address
 	#UserSession.objects.create(user = user,
 	UserSession.objects.create_new(
 								user = user, 
 								session_key = session_key,
 								ip_address = ip_address
-								#city_data = city_data
+								city_data = city_data
 							    #) 
 								)
 
