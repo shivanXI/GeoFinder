@@ -19,7 +19,7 @@
     </div>
     
     <div class='col-sm-6'>
-        <h3>Google maps presentation</h3>
+        <h3>Google maps View<small><a href='/search/?q={{ request.GET.q }}' style='display:none;' id='search-here'>Search Here?</a></small></h3>
         <div id='map' class="gmap"></div>
     </div>
 </div>    
@@ -49,9 +49,41 @@
     function initMap(){
         var map_location = {lat: {{ results.businesses.0.coordinates.latitude }} ,lng: {{ results.businesses.0.coordinates.longitude }}}
         map = new google.maps.Map(document.getElementById('map'),{
-            zoom: 12,
+            zoom: parseInt({{ request.GET.zoom }}) || 12,
             center: map_location,
         });
+        var searchLink = $('#search-here')
+        var defaultSearchLink = searchLink.attr("href")
+        map.addListener('center_changed', function(){
+            window.setTimeout(function(){
+                var mlat = map.center.lat()
+                var mlng = map.center.lng()
+                getLocalName(mlat, mlng)
+                searchLink.fadeIn()
+            }, 1000)
+        
+        })
+
+
+        function getLocalName(lat, lng){
+            var geocoder = new google.maps.Geocoder()
+            var location = new google.maps.LatLng(lat, lng)
+            geocoder.geocoder({'latlng':location}, function(results, status){
+                if( status== google.maps.GeocoderStatus.OK){
+                    if(results[2].address_components[2]){
+                        var longName = results[2].address_components[2].long_name
+                        console.log(longName)
+                        searchLink.attr('href', defaultSearchLink + "&loc=" + longName + "&zoom=" + 6)
+                    }
+                }
+            })
+        }
+
+
+
+
+
+
 
         infoWindow  = new google.maps.InfoWindow()
 
