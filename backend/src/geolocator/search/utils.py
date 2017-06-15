@@ -50,7 +50,7 @@ def get_token(request=None):
     return token
 
 
-def yelp_search(keyword='Food', location='Newport Beach', request=None):
+def yelp_search(keyword='Food', location='Sector 62', request=None):
     token = get_token(request=request)
     headers = {"Authorization": "Bearer " + token}
     params = {'term': keyword, 'location': location}
