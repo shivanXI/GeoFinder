@@ -4,20 +4,32 @@
 <div class='row'>
     <div class='col-sm-6'>
         <h1>Search</h1>
+        
+
         {% for biz in results.businesses %}
-        {{ biz.name }}, {{ biz.location.city }}<br/>
+        <!--{{ biz.name }}, {{ biz.location.city }}<br/>-->
+        <li>
+            <a href="#" class='biz-item'
+                        data-name='{{ biz.name }}'
+                        data-address='{{ biz.location.display_address.0 }} {{ biz.location.display_address.1 }}'
+                        data-lat='{{ biz.coordinates.latitude }}'
+                        data-lng='{{ biz.coordinates.longitude}}'>{{ biz.name }}, {{ biz.location.city }}</a>
+        </li>
         {% endfor %}
     </div>
+    
     <div class='col-sm-6'>
         <h3>Google maps presentation</h3>
         <div id='map' class="gmap"></div>
     </div>
 </div>    
+{% endblock %}
 
+{% block script %}
+<script async defer src="https://ajax.googleapis.com/maps/api/js?key=AIzaSyBc7UDJDjuRSsev1xppxm0mlIVF2kKfm24&callback=initMap"></script>
 
 
 <script>
-    
     var biz_locations = [
         {% for biz in results.businesses %}
             {
