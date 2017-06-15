@@ -75,6 +75,23 @@
             }
             markers.length = 0
         }
+
+        $('.biz-item').click(function(event){
+            event.preventDefault()
+            var locData  = $(this)
+            console.log(locData)
+            var name = locData.attr("data-name")
+            var address = locData.attr("data-address")
+            var lat = parseFloat(locData.attr("data-lat"))
+            var lng = parseFloat(locData.attr("data-lng"))
+            var latlng = {lat: lat, lng: lng}
+
+            var marker  = createMarker(latlng, name, address)
+            markers.push(marker)
+            google.maps.event.trigger(marker, 'click')
+            map.setCenter(latlng)
+            map.setZoom(16)
+        })
     
 
     }
