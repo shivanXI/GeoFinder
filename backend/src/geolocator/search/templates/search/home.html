@@ -30,7 +30,7 @@
     ]
     
     var map;
-    var markers;
+    var markers = [];
     var infoWindow;
 
 
@@ -53,6 +53,7 @@
                 infoWindow.setContent(html)
                 infoWindow.open(map, marker)
             })
+            return marker;
         }
         //var marker = new google.maps.Marker({
           //  position: map_location,
@@ -62,7 +63,8 @@
             for(var i = 0; i  < biz_locations.length; i++){
                 var obj = biz_locations[i]
                 var latlng = {lat: obj.lat, lng: obj.lng}
-                createMarker(latlng, obj.name, obj.address)
+                var marker = createMarker(latlng, obj.name, obj.address)
+                markers.push(marker)
             }
         }
     
