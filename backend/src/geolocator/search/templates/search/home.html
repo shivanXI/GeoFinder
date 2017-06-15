@@ -17,16 +17,56 @@
 
 
 <script>
+    
+    var biz_locations = [
+        {% for biz in results.businesses %}
+            {
+                lat: {{ biz.coordinates.latitude }},
+                lng: {{ biz.coordinates.longitude }},
+                name: "{{ biz.name }}",
+                address:"{{ biz.location.display_address.0 }} {{ biz.location.display_address.1 }}"
+            },
+        {% endfor %}
+    ]
+    
+    var map;
+    var markers;
+    var infoWindow;
+
+
     function initMap(){
-        var location = {lat:28.535 ,lng:77.391}
-        var map = new google.maps.Map(document.getElementById('map'),{
-            zoom: 4,
-            center: location,
+        var map_location = {lat: {{ results.businesses.0.coordinates.latitude }} ,lng: {{ results.businesses.0.coordinates.longitude }}}
+        map = new google.maps.Map(document.getElementById('map'),{
+            zoom: 12,
+            center: map_location,
         });
-        var marker = new google.maps.Marker({
-            position: location,
-            map: map
-        });
+
+        infoWindow  = new google.maps.InfoWindow()
+
+        function createMarker(latlng, name, address){
+            var html = "<b>" + name + "</b><br/>" + address
+            var marker  = new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+            google.maps.event.addListener(marker, 'click', function(){
+                infoWindow.setContent(html)
+                infoWindow.open(map, marker)
+            })
+        }
+        //var marker = new google.maps.Marker({
+          //  position: map_location,
+            //map: map
+        //});
+        if (biz_locations.length > 0){
+            for(var i = 0; i  < biz_locations.length; i++){
+                var obj = biz_locations[i]
+                var latlng = {lat: obj.lat, lng: obj.lng}
+                createMarker(latlng, obj.name, obj.address)
+            }
+        }
+    
+
     }
 </script>
 
